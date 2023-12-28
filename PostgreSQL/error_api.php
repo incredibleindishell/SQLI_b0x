@@ -46,6 +46,78 @@ if ($resource == 'user' && $request[0] == 'id' && $request[1] != null && $reques
     }
 } 
 
+
+elseif ($resource == 'user' && $request[0] == 'sort' && $request[1] != null && $request[2] == null) 
+{
+	$column_name = $request[1] ?? null;
+	if ($column_name) {
+        $result = pg_query($db, "SELECT * FROM admins order by ".$column_name);
+		if($result){
+			
+		while ($row = pg_fetch_assoc($result)) 
+					{
+						
+					
+						
+						header('Content-Type: application/json');
+					echo json_encode(['User Information' => ['id' => $row['id'], 'Handle' => $row['handle'], 'Level' => $row['level']]]);
+	
+				 }
+		}
+		else {
+			
+			header('Content-Type: application/json');
+			echo json_encode(['status' => 'error', 'message' => pg_last_error()]);
+	
+		}
+				
+    } 
+	   
+	else 
+	{
+        
+		header('Content-Type: application/json');
+						echo json_encode(['status' => 'error', 'message' => "Invalid user ID"]);
+	
+    }
+} 
+
+elseif ($resource == 'user' && $request[0] == 'handle' && $request[1] != null && $request[2] == null) 
+{
+	$userId = $request[1] ?? null;
+	if ($userId) {
+         $result = pg_query($db, "SELECT * FROM admins where handle like '".$userId."%'");
+		if($result){
+			
+		while ($row = pg_fetch_assoc($result)) 
+					{
+						
+					
+						
+						header('Content-Type: application/json');
+					echo json_encode(['User Information' => ['id' => $row['id'], 'Handle' => $row['handle'], 'Level' => $row['level']]]);
+	
+				 }
+		}
+		else {
+			
+			header('Content-Type: application/json');
+			echo json_encode(['status' => 'error', 'message' => pg_last_error()]);
+	
+		}
+				
+    } 
+	   
+	else 
+	{
+        
+		header('Content-Type: application/json');
+						echo json_encode(['status' => 'error', 'message' => "Invalid user ID"]);
+	
+    }
+} 
+
+
 elseif ($resource == 'user' && $request[0] == null) 
 {
 
